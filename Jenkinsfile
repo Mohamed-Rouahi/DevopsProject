@@ -1,9 +1,28 @@
-node{
-    stage('SCM Checkout'){
-        git 'https://github.com/Mohamed-Rouahi/DevopsProject.git'  
-    }
-    stage('Email Notification'){
-        mail bcc: '', body: 'test sending email', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'mohamed.rouahi@esprit.tn'        
+pipeline {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from the repository.
+                script {
+                    https://github.com/Mohamed-Rouahi/DevopsProject.git
+                    checkout scm
+                }
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']], // You can specify the branch you want to build here.
+                    userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                ])
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {              
+                 sh 'mvn clean'
+                
+            }
+        }
+
+        
     }
 
-}
+
+
