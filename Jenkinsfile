@@ -2,7 +2,7 @@ pipeline {
     agent any // Define the agent for the pipeline (e.g., any available agent)
 
     stages {
-        stage('Checkout and Build') {
+        stage('Checkout') {
             steps {
                 script {
                     // Checkout your source code from the repository.
@@ -11,10 +11,15 @@ pipeline {
                         branches: [[name: '*/master']], // You can specify the branch you want to build here.
                         userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                     ])
-
-                    // Run 'mvn clean install' to clean and build the project
-                    sh 'mvn clean install'
                 }
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                // Run 'mvn clean' to clean the project
+                sh 'mvn clean'
+                // Add more Maven or build commands as needed
             }
         }
 
