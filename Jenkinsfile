@@ -15,11 +15,17 @@ pipeline {
             }
         }
 
-        stage('Unit Tests') {
+        stage('Clean') {
             steps {
                 // Run 'mvn clean' to clean the project
                 sh 'mvn clean'
-                // Add more Maven or build commands as needed
+            }
+        }
+
+        stage('Install') {
+            steps {
+                // Run 'mvn install' to build and install the project
+                sh 'mvn install'
             }
         }
 
