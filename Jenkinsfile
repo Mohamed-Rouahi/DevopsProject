@@ -25,13 +25,4 @@ pipeline {
 
         // Add more stages for additional build, test, or deployment steps
     }
-
-    post {
-        success {
-            // Actions to take if the pipeline succeeds
-        }
-        failure {
-            // Actions to take if the pipeline fails
-        }
-    }
 }
