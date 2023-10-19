@@ -1,29 +1,39 @@
 pipeline {
-    agent any // Define the agent for the pipeline (e.g., any available agent)
-
+    agent any 
     stages {
         stage('Checkout') {
             steps {
                 script {
+                    // Checkout your source code from the repository.
                     checkout([
-                        $class: 'GitSCM', 
-                        branches: [[name: '*/master']], // You can specify the branch you want to build here.
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']], 
+                       userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                     ])
                 }
             }
         }
-        stage('Send Email') {
+
+        stage('Clean') {
             steps {
-                mail bcc: 'sffsfs', body: 'test test test', cc: 'sffs', from: '', replyTo: '', subject: 'test sending mail', to: 'mohamed.rouahi@esprit.tn'
+                sh 'mvn clean'
             }
         }
-        stage('build') {
-            steps {               
-                sh 'mvn clean compile'
+
+      stage('COMPILE') {
+            steps {
+                sh 'mvn compile'
             }
         }
-        stage("SonarQube analysis") {
+           stage('Email notification') {
+            steps {
+                mail bcc: '', body: '''this is a Jenkins email alerts linked with GitHub 
+                    test
+                    thank you
+                    Azza KOUKA''', cc: '', from: '', replyTo: '', subject: 'Jenkins notification', to: 'azza.kouka@esprit.tn'
+            }
+        }
+         stage("SonarQube analysis") {
             agent any
             steps {
               withSonarQubeEnv('sonarQube') {
@@ -31,5 +41,8 @@ pipeline {
               } 
             }
           }
-    }
+      
+    
+        //Add more stages
+} 
 }
