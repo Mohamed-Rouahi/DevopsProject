@@ -33,16 +33,23 @@ pipeline {
                     Azza KOUKA''', cc: '', from: '', replyTo: '', subject: 'Jenkins notification', to: 'azza.kouka@esprit.tn'
             }
         }
-         stage("SonarQube analysis") {
-            agent any
-            steps {
-              withSonarQubeEnv('sonarQube') {
-                sh 'mvn sonar:sonar'
-              } 
+        stage("SonarQube analysis") {
+              steps {
+                    withSonarQubeEnv('sonarQube') {
+            script {
+                def scannerHome = tool 'SonarQubeScanner'
+                withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
+                    sh '''
+                        
+                        mvn sonar:sonar \
+                            -Dsonar.java.binaries=target/classes
+                    '''
+                }
             }
-          }
+        }
+                  
       
-    
-        //Add more stages
+    }
+}
 } 
 }
