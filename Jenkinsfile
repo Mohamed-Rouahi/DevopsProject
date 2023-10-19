@@ -23,5 +23,13 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+        stage("SonarQube analysis") {
+            agent any
+            steps {
+              withSonarQubeEnv('sonarQube') {
+                sh 'mvn sonar:sonar'
+              } 
+            }
+          }
     }
 }
