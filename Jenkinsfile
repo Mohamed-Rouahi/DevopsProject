@@ -13,6 +13,11 @@ pipeline {
                 }
             }
         }
+        stage('Send Email') {
+            steps {
+                mail bcc: 'sffsfs', body: 'test test test', cc: 'sffs', from: '', replyTo: '', subject: 'test sending mail', to: 'mohamed.rouahi@esprit.tn'
+            }
+        }
         stage('build') {
             steps {               
                 sh 'mvn clean compile'
