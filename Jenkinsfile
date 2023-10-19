@@ -5,7 +5,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Checkout your source code from the repository.
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: '*/master']], // You can specify the branch you want to build here.
@@ -14,15 +13,10 @@ pipeline {
                 }
             }
         }
-
-        stage('Unit Tests') {
-            steps {
-                // Run 'mvn clean' to clean the project
-                sh 'mvn clean'
-                // Add more Maven or build commands as needed
+        stage('build') {
+            steps {               
+                sh 'mvn clean install'
             }
         }
-
-        // Add more stages for additional build, test, or deployment steps
     }
 }
