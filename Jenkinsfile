@@ -29,8 +29,8 @@ pipeline {
             steps {
                 mail bcc: '', body: '''this is a Jenkins email alerts linked with GitHub 
                     test
-                    thank you
-                    Azza KOUKA''', cc: '', from: '', replyTo: '', subject: 'Jenkins notification', to: 'azza.kouka@esprit.tn'
+                    thank you hamma
+                    Mohamed Rouahi''', cc: '', from: '', replyTo: '', subject: 'Jenkins with sonar notification', to: 'mohamed.rouahi@esprit.tn'
             }
         }
         stage("SonarQube analysis") {
