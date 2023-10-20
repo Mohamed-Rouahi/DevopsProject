@@ -24,10 +24,17 @@ pipeline {
             }
         }
         stage("SonarQube analysis") {
-            agent any
             steps {
                 withSonarQubeEnv('sonarQube') {
-                    sh 'mvn sonar:sonar'
+                    script {
+                        def scannerHome = tool 'SonarQubeScanner'
+                        withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
+                            sh '''
+                                mvn sonar:sonar \
+                                    -Dsonar.java.binaries=target/classes
+                            '''
+                        }
+                    }
                 }
             }
         }
