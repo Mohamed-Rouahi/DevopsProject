@@ -21,7 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('AYA 3AD') {
+        stage('BUILD') {
             steps {
                 // Use Java 8 for this stage
                 withEnv(["JAVA_HOME=${tool name: 'JAVA_HOME', type: 'jdk'}"]) {
@@ -29,13 +29,13 @@ pipeline {
                 }
             }
         }
-        stage('Compile') {
+        stage('COMPILE') {
             steps {
                 // Use the default Java 8 for this stage
                 sh 'mvn compile'
             }
         }
-        stage("AYA 3AD YA SonarQube Analysis") {
+        stage("SonarQube Analysis") {
             steps {
                 // Set Java 11 for this stage
                 tool name: 'JAVAA_HOME', type: 'jdk'
