@@ -37,7 +37,7 @@ pipeline {
                 withSonarQubeEnv('sonarQube') {
                     script {
                         def scannerHome = tool 'SonarQubeScanner'
-                        withEnv(["PATH+SCANNER=${scannerHome}/bin", "JAVA_HOME=${env.JAVAA_HOME}"]) {
+                        withEnv(["PATH+SCANNER=${scannerHome}/bin", "JAVAA_HOME=${env.JAVAA_HOME}"]) {
                             sh '''
                                 mvn sonar:sonar \
                                     -Dsonar.java.binaries=target/classes
