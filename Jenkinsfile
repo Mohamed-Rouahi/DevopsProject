@@ -24,14 +24,10 @@ pipeline {
             }
         }
         stage("SonarQube analysis") {
+            agent any
             steps {
-                  script {
-                    tool name: 'JAVA_HOME', type: 'jdk'
-                    env.JAVAA_HOME = tool 'JAVAA_HOME'
-                    sh "${env.JAVAA_HOME}/bin/java -version"
-                    withSonarQubeEnv('sonarQube') {
+                withSonarQubeEnv('sonarQube') {
                     sh 'mvn sonar:sonar'
-                }
                 }
             }
         }
