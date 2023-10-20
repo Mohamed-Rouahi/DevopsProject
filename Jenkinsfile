@@ -4,8 +4,8 @@ pipeline {
         stage('Set Java Version') {
             steps {
                 script {
-                    tool name: 'JDK8', type: 'jdk'
-                    env.JAVA_HOME = tool 'JDK8'
+                    tool name: 'JDK11', type: 'jdk'
+                    env.JAVA_HOME = tool 'JDK11'
                     sh "${env.JAVA_HOME}/bin/java -version"
                 }
             }
