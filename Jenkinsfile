@@ -23,21 +23,19 @@ pipeline {
                 }
             }
         }
-        stage("AYA 3AD YA SonarQube Analysis") {
+        stage("SonarQube analysis") {
             steps {
-                withSonarQubeEnv('sonarQube') {
-                    script {
-                        def scannerHome = tool 'SonarQubeScanner'
-                        withEnv(["PATH+SCANNER=${scannerHome}/bin", "JAVAA_HOME=${env.JAVAA_HOME}"]) {
-                            sh '''
-                                mvn sonar:sonar \
-                                    -Dsonar.java.binaries=target/classes
-                            '''
-                        }
-                    }
+                  script {
+                    tool name: 'JAVA_HOME', type: 'jdk'
+                    env.JAVAA_HOME = tool 'JAVAA_HOME'
+                    sh "${env.JAVAA_HOME}/bin/java -version"
+                    withSonarQubeEnv('sonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
                 }
             }
         }
+        
     }
     post {
         success {
