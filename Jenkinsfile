@@ -1,15 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Set Java Version') {
-            steps {
-                script {
-                    tool name: 'JAVA_HOME', type: 'jdk'
-                    env.JAVA_HOME = tool 'JAVA_HOME'
-                    sh "${env.JAVA_HOME}/bin/java -version"
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 script {
@@ -24,12 +15,12 @@ pipeline {
         }
         stage('AYA 3AD') {
             steps {
-                sh 'mvn clean package'
-            }
-        }
-        stage('Compile') {
-            steps {
-                sh 'mvn compile'
+                script {
+                    tool name: 'JAVA_HOME', type: 'jdk'
+                    env.JAVA_HOME = tool 'JAVA_HOME'
+                    sh "${env.JAVA_HOME}/bin/java -version"
+                    sh 'mvn clean package'
+                }
             }
         }
         stage("AYA 3AD YA SonarQube Analysis") {
