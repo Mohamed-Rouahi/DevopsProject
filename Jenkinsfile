@@ -1,6 +1,18 @@
 pipeline {
     agent any
+    environment {
+        // Définissez ici les variables d'environnement si nécessaire
+    }
     stages {
+        stage('Set Java Version') {
+            steps {
+                script {
+                    tool name: 'JDK8', type: 'jdk'
+                    env.JAVA_HOME = tool 'JDK8'
+                    sh "${env.JAVA_HOME}/bin/java -version"
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 script {
@@ -13,20 +25,17 @@ pipeline {
                 }
             }
         }
-
-        stage('build') {
+        stage('Clean') {
             steps {
-                sh 'mvn clean'
+                sh 'mvn clean package'
             }
         }
-
-        stage('COMPILE') {
+        stage('Compile') {
             steps {
                 sh 'mvn compile'
             }
         }
-
-        stage("SonarQube analysis") {
+        stage("SonarQube Analysis") {
             steps {
                 withSonarQubeEnv('sonarQube') {
                     script {
@@ -42,24 +51,20 @@ pipeline {
             }
         }
     }
-
     post {
         success {
-            mail to: 'mohamed.rouahi@esprit.tn',
-                 subject: 'Jenkins Notification: Success',
-                 body: '''This is a Jenkins email alert linked with GitHub.
-                    Test
-                    Thank you
-                    Mohamed Rouahi'''
+            emailext(
+                subject: "Success: SonarQube Analysis Completed",
+                body: "SonarQube analysis was successful.",
+                to: "mohamed.rouahi@esprit.tn"
+            )
         }
-
         failure {
-            mail to: 'mohamed.rouahi@esprit.tn',
-                 subject: 'Jenkins Notification: Failure',
-                 body: '''This is a Jenkins email alert linked with GitHub.
-                    Test
-                    Thank you
-                    Mohamed Rouahi'''
+            emailext(
+                subject: "Failure: SonarQube Analysis Failed",
+                body: "SonarQube analysis has failed.",
+                to: "mohamed.rouahi@esprit.tn"
+            )
         }
     }
 }
