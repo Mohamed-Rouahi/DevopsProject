@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     stages {
         stage('Checkout') {
             steps {
@@ -8,7 +8,7 @@ pipeline {
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: '*/master']], 
-                       userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                     ])
                 }
             }
@@ -18,38 +18,60 @@ pipeline {
             steps {
                 sh 'mvn clean'
             }
+            post {
+                success {
+                    emailext(
+                        subject: "Success: Clean Stage Completed",
+                        body: "The clean stage was successful.",
+                        to: "recipient@example.com"
+                    )
+                }
+                failure {
+                    emailext(
+                        subject: "Failure: Clean Stage Failed",
+                        body: "The clean stage has failed.",
+                        to: "recipient@example.com"
+                    )
+                }
+            }
         }
 
-      stage('COMPILE') {
+        stage('COMPILE') {
             steps {
                 sh 'mvn compile'
             }
         }
-           stage('Email notification') {
-            steps {
-                mail bcc: '', body: '''this is a Jenkins email alerts linked with GitHub 
-                    test
-                    thank you hamma
-                    Mohamed Rouahi''', cc: '', from: '', replyTo: '', subject: 'Jenkins with sonar notification', to: 'mohamed.rouahi@esprit.tn'
-            }
-        }
+
         stage("SonarQube analysis") {
-              steps {
-                    withSonarQubeEnv('sonarQube') {
-            script {
-                def scannerHome = tool 'SonarQubeScanner'
-                withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
-                    sh '''
-                        
-                        mvn sonar:sonar \
-                            -Dsonar.java.binaries=target/classes
-                    '''
+            steps {
+                withSonarQubeEnv('sonarQube') {
+                    script {
+                        def scannerHome = tool 'SonarQubeScanner'
+                        withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
+                            sh '''
+                                mvn sonar:sonar \
+                                    -Dsonar.java.binaries=target/classes
+                            '''
+                        }
+                    }
+                }
+            }
+            post {
+                success {
+                    emailext(
+                        subject: "Success: SonarQube Analysis Completed",
+                        body: "SonarQube analysis was successful.",
+                        to: "mohamed.rouahi@esprit.tn"
+                    )
+                }
+                failure {
+                    emailext(
+                        subject: "Failure: SonarQube Analysis Failed",
+                        body: "SonarQube analysis has failed.",
+                        to: "mohamed.rouahi@esprit.tn"
+                    )
                 }
             }
         }
-                  
-      
     }
-}
-} 
 }
