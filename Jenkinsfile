@@ -40,13 +40,14 @@ pipeline {
                     }
                 }
             }
-
         }
-            post {
+    }
+
+    post {
         success {
             mail to: 'mohamed.rouahi@esprit.tn',
                  subject: 'Jenkins Notification: Success',
-                 body: '''This is a Jenkins email alerts linked with GitHub.
+                 body: '''This is a Jenkins email alert linked with GitHub.
                     Test
                     Thank you
                     Mohamed Rouahi'''
@@ -55,12 +56,10 @@ pipeline {
         failure {
             mail to: 'mohamed.rouahi@esprit.tn',
                  subject: 'Jenkins Notification: Failure',
-                 body: '''This is a Jenkins email alerts linked with GitHub.
+                 body: '''This is a Jenkins email alert linked with GitHub.
                     Test
                     Thank you
                     Mohamed Rouahi'''
         }
     }
-    }
 }
-
