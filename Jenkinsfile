@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage('Clean') {
+        stage('AYA 3AD') {
             steps {
                 sh 'mvn clean package'
             }
