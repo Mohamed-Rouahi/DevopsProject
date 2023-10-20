@@ -32,7 +32,7 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        stage("SonarQube Analysis") {
+        stage("AYA 3AD YA SonarQube Analysis") {
             steps {
                 withSonarQubeEnv('sonarQube') {
                     script {
