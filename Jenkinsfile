@@ -18,27 +18,12 @@ pipeline {
             steps {
                 sh 'mvn clean'
             }
-            post {
-                success {
-                    emailext(
-                        subject: "Success: Clean Stage Completed",
-                        body: "The clean stage was successful.",
-                        to: "recipient@example.com"
-                    )
-                }
-                failure {
-                    emailext(
-                        subject: "Failure: Clean Stage Failed",
-                        body: "The clean stage has failed.",
-                        to: "recipient@example.com"
-                    )
-                }
-            }
+        
         }
 
-        stage('COMPILE') {
+        stage('TEST') {
             steps {
-                sh 'mvn compile'
+                sh 'mvn test'
             }
         }
 
