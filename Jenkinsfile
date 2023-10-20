@@ -40,23 +40,27 @@ pipeline {
                     }
                 }
             }
-            post {
-                success {
-                    emailext(
-                        subject: "Success: SonarQube Analysis Completed",
-                        body: "SonarQube analysis was successful.",
-                        to: "mohamed.rouahi@esprit.tn"
-                    )
-                }
-                failure {
-                    emailext(
-                        subject: "Failure: SonarQube Analysis Failed",
-                        body: "SonarQube analysis has failed.",
-                        to: "mohamed.rouahi@esprit.tn"
-                    )
-                }
-            }
+
         }
+            post {
+        success {
+            mail to: 'mohamed.rouahi@esprit.tn',
+                 subject: 'Jenkins Notification: Success',
+                 body: '''This is a Jenkins email alerts linked with GitHub.
+                    Test
+                    Thank you
+                    Mohamed Rouahi'''
+        }
+
+        failure {
+            mail to: 'mohamed.rouahi@esprit.tn',
+                 subject: 'Jenkins Notification: Failure',
+                 body: '''This is a Jenkins email alerts linked with GitHub.
+                    Test
+                    Thank you
+                    Mohamed Rouahi'''
+        }
+    }
     }
 }
 
