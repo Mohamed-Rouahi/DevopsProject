@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        // Définissez ici les variables d'environnement si nécessaire
-    }
     stages {
         stage('Set Java Version') {
             steps {
@@ -27,7 +24,7 @@ pipeline {
         }
         stage('Clean') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean'
             }
         }
         stage('Compile') {
