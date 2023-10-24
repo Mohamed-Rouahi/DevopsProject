@@ -67,17 +67,18 @@ pipeline {
             }
         }
         stage('Build Frontend') {
-    steps {
-        sh '''
+            steps {
+                sh '''
             export PATH=/usr/bin:$PATH
             npm install
-            npx -v
+            export PATH=/usr/bin:$PATH  # Assurez-vous que le chemin inclut la version mise à jour de Node.js
             ng build
         '''
+        
     }
 }
-
-    }
+    
+    
     post {
         success {
             emailext(
