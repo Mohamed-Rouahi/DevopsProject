@@ -61,12 +61,9 @@ pipeline {
                 }
             }
         }
-        stage('Build Frontend') {
+        stage('Check npm Version') {
             steps {
-                // Add steps to build your Angular frontend application here
-                // For example:
-                sh 'npm install'
-                sh 'npm run ng build'
+                sh 'npm -v'
             }
         }
     }
