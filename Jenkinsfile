@@ -75,7 +75,7 @@ pipeline {
         }
         // Now you can run 'npm install' and 'ng build'
         sh 'npm install'
-        sh 'ng build'
+        sh 'npm run ng build'
     }
 }
        
