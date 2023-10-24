@@ -67,13 +67,16 @@ pipeline {
             }
         }
         stage('Build Frontend') {
-            steps {
-                // Add steps to build your Angular frontend application here
-                // For example:
-                sh 'npm install'
-                sh 'ng build'
-            }
-        }
+    steps {
+        sh '''
+            export PATH=/usr/bin:$PATH
+            npm install
+            npx -v
+            ng build
+        '''
+    }
+}
+
     }
     post {
         success {
