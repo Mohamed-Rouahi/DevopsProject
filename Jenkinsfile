@@ -29,12 +29,7 @@ pipeline {
                 }
             }
         }
-        stage('COMPILE Backend') {
-            steps {
-                // Use the default Java 8 for this stage
-                sh 'mvn compile'
-            }
-        }
+
         stage("SonarQube Analysis") {
             steps {
                 // Set Java 11 for this stage
@@ -68,12 +63,10 @@ pipeline {
         }
         stage('Build Frontend') {
             steps {
-                sh '''
-                    export PATH=/usr/bin:$PATH
-                    npm install
-                    export PATH=/usr/bin:$PATH  # Assurez-vous que le chemin inclut la version mise à jour de Node.js
-                    ng build
-                '''
+                // Add steps to build your Angular frontend application here
+                // For example:
+                sh 'npm install'
+                sh 'ng build'
             }
         }
     }
