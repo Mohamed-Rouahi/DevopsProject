@@ -9,7 +9,7 @@ pipeline {
                 }
             }
         }
-        stage('Checkout') {
+        stage('Checkout Backend Repo') {
             steps {
                 script {
                     // Checkout your source code from the repository.
@@ -21,7 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('BUILD') {
+        stage('BUILD Backend') {
             steps {
                 // Use Java 8 for this stage
                 withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-        stage('COMPILE') {
+        stage('COMPILE Backend') {
             steps {
                 // Use the default Java 8 for this stage
                 sh 'mvn compile'
@@ -52,6 +52,26 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+        stage('Checkout Frontend Repo') {
+            steps {
+                script {
+                    // Checkout the frontend repository
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'master']], 
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                    ])
+                }
+            }
+        }
+        stage('Build Frontend') {
+            steps {
+                // Add steps to build your Angular frontend application here
+                // For example:
+                sh 'npm install'
+                sh 'ng build'
             }
         }
     }
