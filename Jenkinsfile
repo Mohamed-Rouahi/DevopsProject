@@ -67,13 +67,18 @@ pipeline {
             }
         }
         stage('Build Frontend') {
-            steps {
-                // Add steps to build your Angular frontend application here
-                // For example:
-                sh 'npm install'
-                sh 'ng build'
-            }
+    steps {
+        // Set the Node.js tool defined in Jenkins configuration
+        script {
+            def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
+            env.PATH = "${nodeJSHome}/bin:${env.PATH}"
         }
+        // Now you can run 'npm install' and 'ng build'
+        sh 'npm install'
+        sh 'ng build'
+    }
+}
+       
     }
     post {
         success {
