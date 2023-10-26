@@ -67,17 +67,17 @@ pipeline {
             }
         }
         stage('Build Frontend') {
-    steps {
-        // Set the Node.js tool defined in Jenkins configuration
-        script {
-            def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
-            env.PATH = "${nodeJSHome}/bin:${env.PATH}"
+            steps {
+                // Set the Node.js tool defined in Jenkins configuration
+                script {
+                    def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
+                    env.PATH = "${nodeJSHome}/bin:${env.PATH}"
+                }
+                // Now you can run 'npm install' and 'ng build'
+                sh 'npm install'
+                sh 'npm run ng build'
+            }
         }
-        // Now you can run 'npm install' and 'ng build'
-        sh 'npm install'
-        sh 'npm run ng build'
-    }
-}
         stage('Login to Docker Registry') {
             steps {
                 script {
@@ -87,16 +87,15 @@ pipeline {
                     }
                 }
             }
+        }
         stage('Build and Push Docker Images') {
             steps {
                 script {
                     def backendImage = docker.build('medrouahi/devopsBackend', '-f DevopsProject/Dockerfile .')
                     backendImage.push()
-                    
                 }
             }
         }
-       
     }
     post {
         success {
