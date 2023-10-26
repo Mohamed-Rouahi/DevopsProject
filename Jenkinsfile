@@ -78,6 +78,15 @@ pipeline {
         sh 'npm run ng build'
     }
 }
+        stage('Build and Push Docker Images') {
+            steps {
+                script {
+                    def backendImage = docker.build('medrouahi/devopsBackend', '-f DevopsProject/Dockerfile .')
+                    backendImage.push()
+                    
+                }
+            }
+        }
        
     }
     post {
