@@ -78,24 +78,18 @@ pipeline {
                 sh 'npm run ng build'
             }
         }
-        stage('Login to Docker Registry') {
-            steps {
-                script {
-                    // Utilisez votre nom d'utilisateur et mot de passe Docker Hub
-                    withCredentials([string(credentialsId: 'docker', usernameVariable: 'medrouahi', passwordVariable: 'ertydfgh98')]) {
-                        sh "docker login -u $medrouahi -p $ertydfgh98"
-                    }
-                }
-            }
-        }
+       
         stage('Build and Push Docker Images') {
-            steps {
-                script {
-                    def backendImage = docker.build('medrouahi/devopsBackend', '-f DevopsProject/Dockerfile .')
-                    backendImage.push()
-                }
-            }
+    steps {
+        script {
+            // Use 'sudo' to build the Docker image
+            def backendImage = sh(script: 'sudo docker build -t medrouahi/devopsBackend -f DevopsProject/Dockerfile .', returnStatus: true)            
+            // Use 'sudo' to push the Docker image
+            sh 'sudo docker push medrouahi/devopsBackend'
         }
+    }
+}
+
     }
     post {
         success {
