@@ -82,7 +82,7 @@ pipeline {
         stage('Build and Push Docker Images') {
             steps {
                 script {
-                    def backendImage = docker.build('medrouahi/devopsBackend', '-f DevopsProject/Dockerfile .')
+                    def backendImage = docker.build('medrouahi/devopsbackend', '-f DevopsProject/Dockerfile .')
                     backendImage.push()
                     
                 }
