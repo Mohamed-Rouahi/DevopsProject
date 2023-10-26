@@ -78,25 +78,28 @@ pipeline {
                 sh 'npm run ng build'
             }
         }
-       
         stage('Build and Push Docker Images') {
-    steps {
-        script {
-            // Ajoutez l'étape Git checkout pour le référentiel backend ici
-            checkout([
-                $class: 'GitSCM',
-                branches: [[name: '*/master']],
-                userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
-            ])
+            steps {
+                script {
+                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                    ])
 
-            // Build and push the backend Docker image
-            def backendImage = docker.build('medrouahi/devopsbackend', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
-            backendImage.push()
+                    // Build the backend Docker image
+                    def backendImage = docker.build('medrouahi/devopsbackend', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+
+                    // Authentification Docker Hub avec des informations d'identification secrètes
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "echo \$pwd | docker login -u medrouahi --password-stdin"
+                        // Poussez l'image Docker
+                        backendImage.push()
+                    }
+                }
+            }
         }
-    }
-}
-
-
     }
     post {
         success {
