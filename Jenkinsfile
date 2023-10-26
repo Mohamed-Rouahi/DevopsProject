@@ -78,6 +78,15 @@ pipeline {
         sh 'npm run ng build'
     }
 }
+        stage('Login to Docker Registry') {
+            steps {
+                script {
+                    // Utilisez votre nom d'utilisateur et mot de passe Docker Hub
+                    withCredentials([string(credentialsId: 'docker', usernameVariable: 'medrouahi', passwordVariable: 'ertydfgh98')]) {
+                        sh "docker login -u $medrouahi -p $ertydfgh98"
+                    }
+                }
+            }
         stage('Build and Push Docker Images') {
             steps {
                 script {
