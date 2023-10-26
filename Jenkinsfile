@@ -80,14 +80,22 @@ pipeline {
         }
        
         stage('Build and Push Docker Images') {
-            steps {
-                script {
-                    def backendImage = docker.build('medrouahi/devopsbackend', '-f DevopsProject/Dockerfile .')
-                    backendImage.push()
-                    
-                }
-            }
+    steps {
+        script {
+            // Ajoutez l'étape Git checkout pour le référentiel backend ici
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: '*/master']],
+                userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+            ])
+
+            // Build and push the backend Docker image
+            def backendImage = docker.build('medrouahi/devopsbackend', '-f DevopsProject/Dockerfile .')
+            backendImage.push()
         }
+    }
+}
+
 
     }
     post {
