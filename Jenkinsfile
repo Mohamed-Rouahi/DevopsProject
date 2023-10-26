@@ -93,7 +93,7 @@ pipeline {
 
                     // Authentification Docker Hub avec des informations d'identification secrètes
                     withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-                        sh "echo \$pwd | docker login -u medrouahi --password-stdin"
+                        sh "docker login -u medrouahi -p ${pwd}"
                         // Poussez l'image Docker
                         backendImage.push()
                     }
