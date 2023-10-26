@@ -90,7 +90,7 @@ pipeline {
             ])
 
             // Build and push the backend Docker image
-            def backendImage = docker.build('medrouahi/devopsbackend', '-f DevopsProject/Dockerfile .')
+            def backendImage = docker.build('medrouahi/devopsbackend', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
             backendImage.push()
         }
     }
