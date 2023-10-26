@@ -80,15 +80,14 @@ pipeline {
         }
        
         stage('Build and Push Docker Images') {
-    steps {
-        script {
-            // Use 'sudo' to build the Docker image
-            def backendImage = sh(script: 'sudo docker build -t medrouahi/devopsBackend -f DevopsProject/Dockerfile .', returnStatus: true)            
-            // Use 'sudo' to push the Docker image
-            sh 'sudo docker push medrouahi/devopsBackend'
+            steps {
+                script {
+                    def backendImage = docker.build('medrouahi/devopsBackend', '-f DevopsProject/Dockerfile .')
+                    backendImage.push()
+                    
+                }
+            }
         }
-    }
-}
 
     }
     post {
