@@ -10,7 +10,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: rootpassword
 
   frontend:
-    image: medrouahi/devopsfrontend:latest
+    image: medrouahi/devopsbackend:front
     ports:
       - 80:80
     environment:
