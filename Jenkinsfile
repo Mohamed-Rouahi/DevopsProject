@@ -100,24 +100,39 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Build and Push front Image') {
+        // stage('Build and Push front Image') {
+        //     steps {
+        //         script {
+        //             // Ajoutez l'étape Git checkout pour le référentiel backend ici
+        //             checkout([
+        //                 $class: 'GitSCM',
+        //                 branches: [[name: '*/master']],
+        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+        //             ])
+
+        //             // Build the front Docker image
+        //             def frontImage = docker.build('medrouahi/devopsbackend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+
+        //             // Authentification Docker Hub avec des informations d'identification secrètes
+        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+        //                 sh "docker login -u medrouahi -p ${pwd}"
+        //                 // Poussez l'image Docker
+        //                 frontImage.push()
+        //             }
+        //         }
+        //     }
+        // }
+        stage('docker compose') {
             steps {
                 script {
                     // Ajoutez l'étape Git checkout pour le référentiel backend ici
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: '*/master']],
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                     ])
-
-                    // Build the front Docker image
-                    def frontImage = docker.build('medrouahi/devopsbackend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
-
-                    // Authentification Docker Hub avec des informations d'identification secrètes
                     withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-                        sh "docker login -u medrouahi -p ${pwd}"
-                        // Poussez l'image Docker
-                        frontImage.push()
+                        sh 'docker-compose -f /var/lib/jenkins/workspace/Project-devops/Composefile.yml up -d
                     }
                 }
             }
