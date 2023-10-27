@@ -1,0 +1,25 @@
+version: '3'
+services:
+  backend:
+    image: medrouahi/devopsbackend:latest
+    ports:
+      - 8081:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+
+  frontend:
+    image: medrouahi/devopsfrontend:latest
+    ports:
+      - 80:80
+    environment:
+      BACKEND_URL: http://backend:8080
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3333:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
