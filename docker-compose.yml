@@ -5,9 +5,9 @@ services:
     ports:
       - 8081:8080
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Devops
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: rootpassword
+      SPRING_DATASOURCE_PASSWORD: 
 
   frontend:
     image: medrouahi/devopsbackend:front
@@ -21,5 +21,5 @@ services:
     ports:
       - 3333:3306
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
+      MYSQL_ROOT_PASSWORD: ertydfgh98
+      MYSQL_DATABASE: Devops
