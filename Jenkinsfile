@@ -78,7 +78,7 @@ pipeline {
                 sh 'npm run ng build'
             }
         }
-        stage('Build and Push Docker Images') {
+        stage('Build and Push back Images') {
             steps {
                 script {
                     // Ajoutez l'étape Git checkout pour le référentiel backend ici
@@ -96,6 +96,28 @@ pipeline {
                         sh "docker login -u medrouahi -p ${pwd}"
                         // Poussez l'image Docker
                         backendImage.push()
+                    }
+                }
+            }
+        }
+        stage('Build and Push front Image') {
+            steps {
+                script {
+                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                    ])
+
+                    // Build the front Docker image
+                    def frontImage = docker.build('medrouahi/devopsbackend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+
+                    // Authentification Docker Hub avec des informations d'identification secrètes
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
+                        // Poussez l'image Docker
+                        frontImage.push()
                     }
                 }
             }
