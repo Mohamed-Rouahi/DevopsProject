@@ -21,63 +21,63 @@ pipeline {
                 }
             }
         }
-        stage('BUILD Backend') {
-            steps {
-                // Use Java 8 for this stage
-                withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-                    sh 'mvn clean package'
-                }
-            }
-        }
-        stage('COMPILE Backend') {
-            steps {
-                // Use the default Java 8 for this stage
-                sh 'mvn compile'
-            }
-        }
-        stage("SonarQube Analysis") {
-            steps {
-                // Set Java 11 for this stage
-                tool name: 'JAVA_HOME', type: 'jdk'
-                withEnv(["JAVA_HOME=${tool name: 'JAVA_HOME', type: 'jdk'}"]) {
-                    withSonarQubeEnv('sonarQube') {
-                        script {
-                            def scannerHome = tool 'SonarQubeScanner'
-                            withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
-                                sh '''
-                                    mvn sonar:sonar \
-                                        -Dsonar.java.binaries=target/classes
-                                '''
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        stage('Checkout Frontend Repo') {
-            steps {
-                script {
-                    // Checkout the frontend repository
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: 'master']], 
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
-                    ])
-                }
-            }
-        }
-        stage('Build Frontend') {
-            steps {
-                // Set the Node.js tool defined in Jenkins configuration
-                script {
-                    def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
-                    env.PATH = "${nodeJSHome}/bin:${env.PATH}"
-                }
-                // Now you can run 'npm install' and 'ng build'
-                sh 'npm install'
-                sh 'npm run ng build'
-            }
-        }
+        // stage('BUILD Backend') {
+        //     steps {
+        //         // Use Java 8 for this stage
+        //         withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+        //             sh 'mvn clean package'
+        //         }
+        //     }
+        // }
+        // stage('COMPILE Backend') {
+        //     steps {
+        //         // Use the default Java 8 for this stage
+        //         sh 'mvn compile'
+        //     }
+        // }
+        // stage("SonarQube Analysis") {
+        //     steps {
+        //         // Set Java 11 for this stage
+        //         tool name: 'JAVA_HOME', type: 'jdk'
+        //         withEnv(["JAVA_HOME=${tool name: 'JAVA_HOME', type: 'jdk'}"]) {
+        //             withSonarQubeEnv('sonarQube') {
+        //                 script {
+        //                     def scannerHome = tool 'SonarQubeScanner'
+        //                     withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
+        //                         sh '''
+        //                             mvn sonar:sonar \
+        //                                 -Dsonar.java.binaries=target/classes
+        //                         '''
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Checkout Frontend Repo') {
+        //     steps {
+        //         script {
+        //             // Checkout the frontend repository
+        //             checkout([
+        //                 $class: 'GitSCM',
+        //                 branches: [[name: 'master']], 
+        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+        //             ])
+        //         }
+        //     }
+        // }
+        // stage('Build Frontend') {
+        //     steps {
+        //         // Set the Node.js tool defined in Jenkins configuration
+        //         script {
+        //             def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
+        //             env.PATH = "${nodeJSHome}/bin:${env.PATH}"
+        //         }
+        //         // Now you can run 'npm install' and 'ng build'
+        //         sh 'npm install'
+        //         sh 'npm run ng build'
+        //     }
+        // }
         // stage('Build and Push back Images') {
         //     steps {
         //         script {
@@ -122,21 +122,20 @@ pipeline {
         //         }
         //     }
         // }
-        stage('docker compose') {
-            steps {
-                script {
-                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/master']],
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
-                    ])
-                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-                        sh 'docker compose up -d'
-                    }
-                }
-            }
+        stage('Run Docker Compose') {
+    steps {
+        script {
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: '*/master']], 
+                userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+            ])
+
+            // Run the docker-compose command
+            sh 'docker compose up -d' 
         }
+    }
+}
     }
     post {
         success {
