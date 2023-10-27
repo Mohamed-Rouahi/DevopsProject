@@ -132,7 +132,7 @@ pipeline {
                         userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                     ])
                     withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-                        sh 'docker-compose -f /var/lib/jenkins/workspace/Project-devops/Composefile.yml up -d
+                        sh 'docker-compose -f /var/lib/jenkins/workspace/Project-devops/Composefile.yml up -d'
                     }
                 }
             }
