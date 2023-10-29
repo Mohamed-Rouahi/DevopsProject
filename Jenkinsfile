@@ -89,7 +89,7 @@ pipeline {
                     ])
 
                     // Build the backend Docker image
-                    def backendImage = docker.build('medrouahi/devopsbackend:backend', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    def backendImage = docker.build('medrouahi/spring-app', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
                     // Authentification Docker Hub avec des informations d'identification secrètes
                     withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
