@@ -1,9 +1,9 @@
 version: '3'
 services:
   backend:
-    image: medrouahi/devopsbackend:latest
+    image: medrouahi/devopsbackend:backend
     ports:
-      - 8081:8081
+      - 8082:8081
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Devops
       SPRING_DATASOURCE_USERNAME: root
@@ -14,7 +14,7 @@ services:
     ports:
       - 80:80
     environment:
-      BACKEND_URL: http://backend:8081
+      BACKEND_URL: http://backend:8082
 
   mysql:
     image: mysql:latest
