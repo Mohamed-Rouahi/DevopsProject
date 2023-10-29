@@ -25,7 +25,7 @@ pipeline {
             steps {
                 // Use Java 8 for this stage
                 withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-                    sh 'mvn clean package'
+                    sh 'mvn clean install'
                 }
             }
         }
