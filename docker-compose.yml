@@ -1,7 +1,7 @@
 version: "3.8"
 services:
-  mysql:
-    container_name: mysql
+  mysqldb:
+    container_name: mysqldb
     image: "mysql:latest"
     restart: always
     ports:
@@ -9,7 +9,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=devops
-      - spring.datasource.url=jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/devops?createDatabaseIfNotExist=true
       - spring.datasource.username=root
       - spring.datasource.password=root
       - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -17,10 +17,10 @@ services:
       - jpa.show-sql=true
       - jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
 
-  backend:
+  cours:
     build: ./
     environment:
-      - spring.datasource.url=jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/devops?createDatabaseIfNotExist=true
       - spring.datasource.username=root
       - spring.datasource.password=root
       - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -28,6 +28,6 @@ services:
       - spring.jpa.hibernate.ddl-auto=update
     ports:
       - 8082:8082
-    image: medrouahi/devopsbackend:backend
+    image: spring-app
     depends_on:
-      - mysql
+      - mysqldb
