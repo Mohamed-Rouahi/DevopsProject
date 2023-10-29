@@ -122,20 +122,20 @@ pipeline {
         //         }
         //     }
         // }
-//         stage('Run Docker Compose') {
-//     steps {
-//         script {
-//             checkout([
-//                 $class: 'GitSCM',
-//                 branches: [[name: '*/master']], 
-//                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
-//             ])
+         stage('Run Docker Compose') {
+     steps {
+         script {
+             checkout([
+                 $class: 'GitSCM',
+                 branches: [[name: '*/master']], 
+                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+             ])
 
-//             // Run the docker-compose command
-//             sh 'docker compose up -d' 
-//         }
-//     }
-// }
+             // Run the docker-compose command
+             sh 'docker compose up -d' 
+         }
+     }
+ }
     }
     post {
         success {
