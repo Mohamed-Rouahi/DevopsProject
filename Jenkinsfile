@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        // stage('Set Java Version') {
-        //     steps {
-        //         script {
-        //             // Set the default JAVA_HOME to Java 8
-        //             tool name: 'JAVAA_HOME', type: 'jdk'
-        //         }
-        //     }
-        // }
+        stage('Set Java Version') {
+            steps {
+                script {
+                    // Set the default JAVA_HOME to Java 8
+                    tool name: 'JAVAA_HOME', type: 'jdk'
+                }
+            }
+        }
         stage('Checkout Backend Repo') {
             steps {
                 script {
@@ -21,20 +21,20 @@ pipeline {
                 }
             }
         }
-        // stage('BUILD Backend') {
-        //     steps {
-        //         // Use Java 8 for this stage
-        //         withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-        //             sh 'mvn clean install'
-        //         }
-        //     }
-        // }
-        // stage('COMPILE Backend') {
-        //     steps {
-        //         // Use the default Java 8 for this stage
-        //         sh 'mvn compile'
-        //     }
-        // }
+        stage('BUILD Backend') {
+            steps {
+                // Use Java 8 for this stage
+                withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        stage('COMPILE Backend') {
+            steps {
+                // Use the default Java 8 for this stage
+                sh 'mvn compile'
+            }
+        }
         // stage("SonarQube Analysis") {
         //     steps {
         //         // Set Java 11 for this stage
@@ -78,28 +78,28 @@ pipeline {
         //         sh 'npm run ng build'
         //     }
         // }
-        // stage('Build and Push back Images') {
-        //     steps {
-        //         script {
-        //             // Ajoutez l'étape Git checkout pour le référentiel backend ici
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: '*/master']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
-        //             ])
+        stage('Build and Push back Images') {
+            steps {
+                script {
+                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                    ])
 
-        //             // Build the backend Docker image
-        //             def backendImage = docker.build('medrouahi/spring-app', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    // Build the backend Docker image
+                    def backendImage = docker.build('medrouahi/spring-app', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
-        //             // Authentification Docker Hub avec des informations d'identification secrètes
-        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-        //                 sh "docker login -u medrouahi -p ${pwd}"
-        //                 // Poussez l'image Docker
-        //                 backendImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+                    // Authentification Docker Hub avec des informations d'identification secrètes
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
+                        // Poussez l'image Docker
+                        backendImage.push()
+                    }
+                }
+            }
+        }
         // stage('Build and Push front Image') {
         //     steps {
         //         script {
@@ -122,6 +122,24 @@ pipeline {
         //         }
         //     }
         // }
+        stage('Deploy to Nexus Repository') {
+            steps {
+              script {
+                        // Add the Git checkout step for the backend repository here
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/master']],
+                            userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                        ])
+                        
+                        // Authenticate with Docker Hub using credentials
+                        withCredentials([string(credentialsId: 'Docker', variable: 'password')]) {
+                sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
+            }
+           }
+          }
+        }
+        
  //         stage('Run Docker Compose') {
  //     steps {
  //         script {
