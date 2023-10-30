@@ -124,6 +124,11 @@ pipeline {
         // }
         stage('Deploy to Nexus Repository') {
             steps {
+                script {
+                    // Set the default JAVA_HOME to Java 8
+                    tool name: 'JAVAA_HOME', type: 'jdk'
+                }
+            
               script {
                         // Add the Git checkout step for the backend repository here
                         checkout([
