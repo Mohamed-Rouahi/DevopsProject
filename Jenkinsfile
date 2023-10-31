@@ -137,8 +137,7 @@ pipeline {
                             userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
                         ])
                         
-                        // Authenticate with Docker Hub using credentials
-                        withCredentials([UsernamePasswordMultiBinding(credentialsId: 'nexus-credentiel', variable: 'password')]) {
+                        withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
                 sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
             }
            }
