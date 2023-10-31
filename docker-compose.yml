@@ -34,11 +34,13 @@ services:
       - spring.jpa.hibernate.ddl-auto=update
     ports:
       - 8082:8082
-    grafana:
+
+  grafana:
     container_name: grafana
     image: grafana/grafana
     ports:
       - 3000:3000
+
   prometheus:
     container_name: prometheus
     image: prom/prometheus
@@ -46,9 +48,3 @@ services:
       - 9090:9090
     volumes:
       - /etc/prometheus:/etc/prometheus
-    
-
-
-    
-
-
