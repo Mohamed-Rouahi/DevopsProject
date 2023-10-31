@@ -28,7 +28,7 @@ services:
       - spring.jpa.show-sql=true
       - spring.jpa.hibernate.ddl-auto=update
     ports:
-      - 8081:8082
+      - 8082:8082
     image: "medrouahi/spring-app:latest"
     depends_on:
       - mysqldb
