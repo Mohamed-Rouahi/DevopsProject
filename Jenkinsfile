@@ -132,23 +132,20 @@ pipeline {
                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
             ])
 
-            // Utilisez la version de Java 8 pour cette étape
-            withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-                // Utilisez le plugin Nexus Artifact Uploader pour déployer l'artefact
-                step([$class: 'sp.sd.nexusartifactuploader.NexusArtifactUploaderStep', 
-                    nexusVersion: 'nexus3',
-                    protocol: 'http', // Vous pouvez utiliser 'https' si nécessaire
-                    nexusUrl: 'http://192.168.33.10:8081', // Assurez-vous d'utiliser le bon URL
-                    groupId: 'tn.esprit',
-                    version: '1.0.0',
-                    repository: 'maven-releases',
-                    credentialsId: 'nexus-credentiel',
-                    artifacts: [[artifactId: 'DevOps_Project', classifier: '', file: 'target/DevOps_Project.jar']]
-                ])
-            }
+            // Configure the NexusArtifactUploaderStep
+            NexusArtifactUploaderStep(
+                groupId: 'tn.esprit',
+                nexusUrl: 'http://192.168.33.10:8081',
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                repository: 'maven-releases',
+                version: '1.0.0',
+                artifacts: [[artifactId: 'DevOps_Project', classifier: '', file: 'target/DevOps_Project.jar']]
+            )
         }
     }
 }
+
 
 
         
