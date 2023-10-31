@@ -124,10 +124,7 @@ pipeline {
         // }
         stage('Deploy to Nexus Repository') {
             steps {
-                script {
-                    // Set the default JAVA_HOME to Java 8
-                    tool name: 'JAVAA_HOME', type: 'jdk'
-                }
+                
             
               script {
                         // Add the Git checkout step for the backend repository here
@@ -138,10 +135,12 @@ pipeline {
                         ])
                         
                         withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
+                            withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
                 sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
             }
            }
           }
+        }
         }
         
  //         stage('Run Docker Compose') {
