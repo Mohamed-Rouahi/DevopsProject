@@ -123,28 +123,25 @@ pipeline {
         //     }
         // }
        stage('Deploy to Nexus Repository') {
-    steps {
-        script {
-            // Add the Git checkout step for the backend repository here
-            checkout([
-                $class: 'GitSCM',
-                branches: [[name: '*/master']],
-                userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
-            ])
-
-            // Configure the NexusArtifactUploaderStep
-            NexusArtifactUploaderStep(
-                groupId: 'tn.esprit',
-                nexusUrl: 'http://192.168.33.10:8081',
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                repository: 'maven-releases',
-                version: '1.0.0',
-                artifacts: [[artifactId: 'DevOps_Project', classifier: '', file: 'target/DevOps_Project.jar']]
-            )
+            steps {
+                
+            
+              script {
+                        // Add the Git checkout step for the backend repository here
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/master']],
+                            userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProject.git']]
+                        ])
+                        
+                        withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
+                            withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+                sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
+            }
+           }
+          }
         }
-    }
-}
+        }
 
 
 
