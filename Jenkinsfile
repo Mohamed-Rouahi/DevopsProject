@@ -21,14 +21,14 @@ pipeline {
                 }
             }
         }
-        // stage('BUILD Backend') {
-        //     steps {
-        //         // Use Java 8 for this stage
-        //         withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-        //             sh 'mvn clean install'
-        //         }
-        //     }
-        // }
+        stage('BUILD Backend') {
+            steps {
+                // Use Java 8 for this stage
+                withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+                    sh 'mvn clean install'
+                }
+            }
+        }
         // stage('COMPILE Backend') {
         //     steps {
         //         // Use the default Java 8 for this stage
