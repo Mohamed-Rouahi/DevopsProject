@@ -16,7 +16,9 @@ services:
       - jpa.hibernate.ddl-auto=update
       - jpa.show-sql=true
       - jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-
+  networks:
+  project-devops_default:
+    driver: bridge
   backend:
     container_name: backend
     build: ./
