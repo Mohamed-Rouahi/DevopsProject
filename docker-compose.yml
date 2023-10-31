@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   mysqldb:
-    image: mysql:5.7
+    image: mysql:latest
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=devops
     ports:
-      - 3306:3306
+      - 33333:3306
     volumes:
       - db:/var/lib/mysql
 
